@@ -1,0 +1,188 @@
+package oop;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+public class Register {
+	public Register(){
+		final Database data = new Database();
+		//create frame
+		final JFrame Register = new JFrame();
+		Register.setTitle("Chuchai Coffee Shop");
+		Register.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		Register.setSize(857,679);
+		Register.setLayout(null);
+		Register.setResizable(false);
+		Register.setIconImage ( Toolkit.getDefaultToolkit ( ).getImage ("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\logo1.PNG"));
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		Register.setLocation(dim.width/2-Register.getSize().width/2, dim.height/2-Register.getSize().height/2);
+		
+		final JLabel labelRegister = new JLabel("");
+		labelRegister.setSize(860,650);
+		Register.add(labelRegister);
+		labelRegister.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Register02.jpg"));
+		
+		JLabel Firstname = new JLabel("First Name >>");
+		Firstname.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15));
+		Firstname.setBounds(360, 295, 190, 20);
+		labelRegister.add(Firstname);
+		
+		final JTextField inputBoxfirstname = new JTextField();
+		labelRegister.add(inputBoxfirstname);
+		inputBoxfirstname.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15));
+		inputBoxfirstname.setBounds(510, 290, 260, 30);
+		
+		JLabel Lastname = new JLabel("Last Name >>");
+		Lastname.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15));
+		Lastname.setBounds(360, 340, 190, 20);
+		labelRegister.add(Lastname);
+		
+		final JTextField inputBoxlastname = new JTextField();
+		labelRegister.add(inputBoxlastname);
+		inputBoxlastname.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15));
+		inputBoxlastname.setBounds(510, 335, 260, 30);
+		
+		JLabel Phone = new JLabel("Phone >>");
+		Phone.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15));
+		Phone.setBounds(360, 385, 200, 20);
+		labelRegister.add(Phone);
+		
+		final JTextField inputBoxPhone = new JTextField();
+		labelRegister.add(inputBoxPhone);
+		inputBoxPhone.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15));
+		inputBoxPhone.setBounds(510, 380, 260, 30);
+		
+		JLabel Email = new JLabel("Email >>");
+		Email.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15));
+		Email.setBounds(360, 425, 200, 20);
+		labelRegister.add(Email);
+		
+		final JTextField inputBoxEmail = new JTextField();
+		labelRegister.add(inputBoxEmail);
+		inputBoxEmail.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15));
+		inputBoxEmail.setBounds(510, 420, 260, 30);
+		
+		//Button OK in register
+		JButton OKButtoninregis = new JButton();
+		OKButtoninregis.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Okbutton02.png"));
+		labelRegister.add(OKButtoninregis);
+		OKButtoninregis.setBounds(510, 550, 150, 50);
+		
+		
+		//OK Button in register
+		OKButtoninregis.addActionListener(new ActionListener() {
+			//Link window General
+			public void actionPerformed(ActionEvent event) {
+				try{
+				String First = inputBoxfirstname.getText();
+				String Last = inputBoxlastname.getText();
+				String Phone = inputBoxPhone.getText();
+				String Email = inputBoxEmail.getText();	
+				if(First.equals("")||Last.equals("")||Phone.equals("")||Email.equals(""))
+					{	
+						JOptionPane.showMessageDialog(labelRegister,"Error! Incorrect Information.","Error",JOptionPane.ERROR_MESSAGE);
+					}
+					else
+					{
+						//labeldetail
+						final JLabel labeldetail = new JLabel("");
+						labeldetail.setSize(860,650);
+						labeldetail.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Detai02.jpg"));
+						Register.add(labeldetail);
+						
+						data.insert(First, Last, Phone, Email);
+						
+						JLabel YourID = new JLabel("Your ID member >> "+data.Showidmember(First));
+						YourID.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+						YourID.setBounds(200, 200, 400, 100);
+						labeldetail.add(YourID);
+						
+						
+						JLabel showFirstandLast = new JLabel("Name >>  "+First+" "+Last);
+						showFirstandLast.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+						showFirstandLast.setBounds(200, 250, 500, 100);
+						labeldetail.add(showFirstandLast);
+						
+						JLabel showPhone = new JLabel("Phone number >>  "+Phone);
+						showPhone.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+						showPhone.setBounds(200, 300, 500, 100);
+						labeldetail.add(showPhone);
+						
+						JLabel showEmail = new JLabel("Email >>  "+Email);
+						showEmail.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+						showEmail.setBounds(200, 350, 500, 100);
+						labeldetail.add(showEmail);
+						
+						JLabel showCount = new JLabel("Count login >>  "+ data.Point(data.Showidmember(First)));
+						showCount.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+						showCount.setBounds(200, 400, 500, 100);
+						labeldetail.add(showCount);
+						
+						JLabel warning = new JLabel("If press ORDER you can't edit information.");
+						warning.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15));
+						warning.setForeground(Color.RED);
+						warning.setBounds(200, 450, 800, 100);
+						labeldetail.add(warning);
+						
+						JButton Back = new JButton();
+						Back.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\BackButton.jpg"));
+						Back.setBounds(250, 550, 100, 50);
+						labeldetail.add(Back);
+						
+						JButton Order = new JButton();
+						Order.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\orderButton.jpg"));
+						Order.setBounds(500, 550, 100, 50);
+						labeldetail.add(Order);
+						
+						Back.addActionListener(new ActionListener() {
+							//Link window General
+							public void actionPerformed(ActionEvent event) {
+								//labelCustomer
+								//เรียกหน้า เมนูมาสั่ง//
+								data.Delete();
+								Register.getContentPane().remove(labeldetail);
+								Register.getContentPane().add(labelRegister);
+								Register.getContentPane().validate();
+								Register.getContentPane().repaint();
+							}
+						});
+						
+						Order.addActionListener(new ActionListener() {
+							//Link window General
+							public void actionPerformed(ActionEvent event) {
+								//labelCustomer
+								//เรียกหน้า เมนูมาสั่ง//
+								final Menu select = new Menu();
+								select.setSelect("Register");
+								Register.setVisible(false);
+							}
+						});
+						
+						Register.getContentPane().remove(labelRegister);
+						Register.getContentPane().add(labeldetail);
+						Register.getContentPane().validate();
+						Register.getContentPane().repaint();
+						First = null;
+						Last = null;
+						Phone = null;
+						Email = null;
+						Register.setVisible(true);
+					}}catch(Exception e){
+					//if error, show popup
+					JOptionPane.showMessageDialog(labelRegister,"Error!","Error",JOptionPane.ERROR_MESSAGE);	
+				}
+			}
+		});
+	Register.setVisible(true);
+	}
+}
