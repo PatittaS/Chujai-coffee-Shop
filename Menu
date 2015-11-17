@@ -1,0 +1,733 @@
+package oop;
+import java.awt.*;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.accessibility.AccessibleContext;
+import javax.swing.*;
+//import com.jgoodies.forms.factories.DefaultComponentFactory;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
+public class Menu {
+		private static String Total;
+		static String select;
+		private JFrame Order = new JFrame("MENU");
+	    static int total=0,ch=0,cash=0;
+		static int[] list = new int[21];
+		static String[] list_m = new String[] 
+				{"Hot_Cappucino","Hot_Chocolate","Hot_Espresso","Hot_Greentea","Hot_Latte","Hot_Milktea","Hot_Mocha",
+				"Iced_Cappucino","Iced_Chocolate","Iced_Espresso","Iced_Greentea","Iced_Latte","Iced_Milktea","Iced_Mocha",
+				"Blened_Cappucino","Blened_Chocolate","Blened_Espresso","Blened_Greentea","Blened_Latte","Blened_Milktea","Blened_Mocha"};
+		static int[] cost = new int[] {
+				25,30,25,30,25,25,25,
+				35,40,35,40,35,35,35,
+				40,45,40,45,40,40,40};
+		static String message="";
+		static String message2="";
+		private  JTextField pay;
+		private final JLabel lbBG = new JLabel("");
+		private final JLabel lbBGCapu = new JLabel("");
+		
+		static Database data = new Database();
+		public Menu() {
+			Order.setIconImage ( Toolkit.getDefaultToolkit ( ).getImage ("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\logo1.PNG"));
+			Order.setResizable(false);
+			Order.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			Order.setSize(1364,715);
+			Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+			Order.setLocation(dim.width/2-Order.getSize().width/2, dim.height/2-Order.getSize().height/2);
+			Order.getContentPane().setLayout(null);
+			
+			JButton ok_order = new JButton();
+			ok_order.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Okbutton02.png"));
+			ok_order.setFocusable(false);
+			ok_order.setBounds(391, 504, 150, 50);
+			Order.getContentPane().add(ok_order);
+			
+			int stock = 0;
+			stock += data.ShowStock("Straw");
+			
+			final JLabel first = new JLabel("1.Choose your order and press OK.");
+			first.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 18));
+			first.setForeground(Color.WHITE);
+			first.setBounds(60, 100, 500, 27);
+			Order.getContentPane().add(first);
+			
+			final JLabel second = new JLabel("2.Insert your Cash then press CALCULATE.");
+			second.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 18));
+			second.setForeground(Color.WHITE);
+			second.setBounds(800, 316, 550, 27);
+			Order.getContentPane().add(second);
+			
+			final JSpinner spin_H_Cappucino = new JSpinner();
+			spin_H_Cappucino.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			spin_H_Cappucino.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			spin_H_Cappucino.setBounds(230, 174, 51, 20);
+			Order.getContentPane().add(spin_H_Cappucino);
+			
+			final JSpinner spin_I_Cappucino = new JSpinner();
+			spin_H_Cappucino.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			spin_I_Cappucino.setBounds(230, 205, 51, 20);
+			Order.getContentPane().add(spin_I_Cappucino);
+			
+			final JSpinner spin_B_Cappucino = new JSpinner();
+			spin_H_Cappucino.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			spin_B_Cappucino.setBounds(230, 238, 51, 20);
+			Order.getContentPane().add(spin_B_Cappucino);
+			
+			
+			JLabel lb_H_Cappucino = new JLabel("  Hot (25/cup)");
+			lb_H_Cappucino.setOpaque(true);
+			lb_H_Cappucino.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_H_Cappucino.setBackground(new Color(255, 160, 122));
+			lb_H_Cappucino.setBounds(122, 171, 163, 27);
+			Order.getContentPane().add(lb_H_Cappucino);
+			
+			JLabel lb_I_Cappucino = new JLabel("  Iced (35/cup)");
+			lb_I_Cappucino.setOpaque(true);
+			lb_I_Cappucino.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_I_Cappucino.setBackground(new Color(175, 238, 238));
+			lb_I_Cappucino.setBounds(122, 202, 163, 27);
+			Order.getContentPane().add(lb_I_Cappucino);
+			
+			JLabel lb_B_Cappucino = new JLabel("  Blened (40/cup)");
+			lb_B_Cappucino.setToolTipText("");
+			lb_B_Cappucino.setOpaque(true);
+			lb_B_Cappucino.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_B_Cappucino.setBackground(new Color(221, 160, 221));
+			lb_B_Cappucino.setBounds(122, 234, 163, 27);
+			Order.getContentPane().add(lb_B_Cappucino);
+			
+			JLabel lb_Cappucino = new JLabel("***Cappucino***");
+			lb_Cappucino.setVerticalAlignment(SwingConstants.TOP);
+			lb_Cappucino.setHorizontalTextPosition(SwingConstants.LEFT);
+			lb_Cappucino.setForeground(Color.YELLOW);//
+			lb_Cappucino.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 18));
+			lb_Cappucino.setBackground(new Color(240, 255, 255));
+			lb_Cappucino.setBounds(30, 141, 255, 134);
+			Order.getContentPane().add(lb_Cappucino);
+			
+			final JSpinner spin_H_Chocolate = new JSpinner();
+			spin_H_Cappucino.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			spin_H_Chocolate.setBounds(512, 174, 51, 20);
+			Order.getContentPane().add(spin_H_Chocolate);
+			
+			final JSpinner spin_I_Chocolate = new JSpinner();
+			spin_H_Cappucino.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			spin_I_Chocolate.setBounds(512, 204, 51, 20);
+			Order.getContentPane().add(spin_I_Chocolate);
+			
+			final JSpinner spin_B_Chocolate = new JSpinner();
+			spin_H_Cappucino.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			spin_B_Chocolate.setBounds(512, 237, 51, 20);
+			Order.getContentPane().add(spin_B_Chocolate);
+			
+			JLabel lb_H_Chocolate = new JLabel("  Hot (30/cup)");
+			lb_H_Chocolate.setOpaque(true);
+			lb_H_Chocolate.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_H_Chocolate.setBackground(new Color(255, 160, 122));
+			lb_H_Chocolate.setBounds(404, 171, 163, 27);
+			Order.getContentPane().add(lb_H_Chocolate);
+			
+			JLabel lb_I_Chocolate = new JLabel("  Iced (40/cup)");
+			lb_I_Chocolate.setOpaque(true);
+			lb_I_Chocolate.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_I_Chocolate.setBackground(new Color(175, 238, 238));
+			lb_I_Chocolate.setBounds(404, 202, 163, 27);
+			Order.getContentPane().add(lb_I_Chocolate);
+			
+			JLabel lb_B_Chocolate = new JLabel("  Blened (45/cup)");
+			lb_B_Chocolate.setToolTipText("");
+			lb_B_Chocolate.setOpaque(true);
+			lb_B_Chocolate.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_B_Chocolate.setBackground(new Color(221, 160, 221));
+			lb_B_Chocolate.setBounds(404, 234, 163, 27);
+			Order.getContentPane().add(lb_B_Chocolate);
+			
+			JLabel lb_Chocolate = new JLabel("***Chocolate***");
+			lb_Chocolate.setVerticalAlignment(SwingConstants.TOP);
+			lb_Chocolate.setHorizontalTextPosition(SwingConstants.LEFT);
+			lb_Chocolate.setForeground(Color.YELLOW);
+			lb_Chocolate.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 18));
+			lb_Chocolate.setBackground(Color.BLUE);
+			lb_Chocolate.setBounds(308, 141, 255, 134);
+			Order.getContentPane().add(lb_Chocolate);
+			
+			final JSpinner spin_H_Espresso = new JSpinner();
+			spin_H_Espresso.setBounds(789, 174, 51, 20);
+			spin_H_Espresso.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_H_Espresso);
+			
+			final JSpinner spin_I_Espresso = new JSpinner();
+			spin_I_Espresso.setBounds(789, 204, 51, 20);
+			spin_I_Espresso.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_I_Espresso);
+			
+			final JSpinner spin_B_Espresso = new JSpinner();
+			spin_B_Espresso.setBounds(789, 237, 51, 20);
+			spin_B_Espresso.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_B_Espresso);
+			
+			JLabel lb_H_Espresso = new JLabel("  Hot (25/cup)");
+			lb_H_Espresso.setOpaque(true);
+			lb_H_Espresso.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_H_Espresso.setBackground(new Color(255, 160, 122));
+			lb_H_Espresso.setBounds(681, 171, 163, 27);
+			Order.getContentPane().add(lb_H_Espresso);
+			
+			JLabel lb_I_Espresso = new JLabel("  Iced (35/cup)");
+			lb_I_Espresso.setOpaque(true);
+			lb_I_Espresso.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_I_Espresso.setBackground(new Color(175, 238, 238));
+			lb_I_Espresso.setBounds(681, 202, 163, 27);
+			Order.getContentPane().add(lb_I_Espresso);
+			
+			JLabel lb_B_Espresso = new JLabel("  Blened (40/cup)");
+			lb_B_Espresso.setToolTipText("");
+			lb_B_Espresso.setOpaque(true);
+			lb_B_Espresso.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_B_Espresso.setBackground(new Color(221, 160, 221));
+			lb_B_Espresso.setBounds(681, 234, 163, 27);
+			Order.getContentPane().add(lb_B_Espresso);
+			
+			JLabel lb_Espresso = new JLabel("***Espresso***");
+			lb_Espresso.setVerticalAlignment(SwingConstants.TOP);
+			lb_Espresso.setHorizontalTextPosition(SwingConstants.LEFT);
+			lb_Espresso.setForeground(Color.YELLOW);
+			lb_Espresso.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 18));
+			lb_Espresso.setBackground(Color.BLUE);
+			lb_Espresso.setBounds(589, 141, 255, 134);
+			Order.getContentPane().add(lb_Espresso);
+			
+			final JSpinner spin_H_Greentea = new JSpinner();
+			spin_H_Greentea.setBounds(350, 335, 51, 20);
+			spin_H_Greentea.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_H_Greentea);
+			
+			final JSpinner spin_I_Greentea = new JSpinner();
+			spin_I_Greentea.setBounds(350, 365, 51, 20);
+			spin_I_Greentea.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_I_Greentea);
+			
+			final JSpinner spin_B_Greentea = new JSpinner();
+			spin_B_Greentea.setBounds(350, 398, 51, 20);
+			spin_B_Greentea.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_B_Greentea);
+			
+			JLabel lb_H_Greentea = new JLabel("  Hot (30/cup)");
+			lb_H_Greentea.setOpaque(true);
+			lb_H_Greentea.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_H_Greentea.setBackground(new Color(255, 160, 122));
+			lb_H_Greentea.setBounds(243, 332, 163, 27);
+			Order.getContentPane().add(lb_H_Greentea);
+			
+			JLabel lb_I_Greentea = new JLabel("  Iced (40/cup)");
+			lb_I_Greentea.setOpaque(true);
+			lb_I_Greentea.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_I_Greentea.setBackground(new Color(175, 238, 238));
+			lb_I_Greentea.setBounds(243, 363, 163, 27);
+			Order.getContentPane().add(lb_I_Greentea);
+			
+			JLabel lb_B_Greentea = new JLabel("  Blened (45/cup)");
+			lb_B_Greentea.setToolTipText("");
+			lb_B_Greentea.setOpaque(true);
+			lb_B_Greentea.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_B_Greentea.setBackground(new Color(221, 160, 221));
+			lb_B_Greentea.setBounds(243, 395, 163, 27);
+			Order.getContentPane().add(lb_B_Greentea);
+			
+			JLabel lb_Greentea = new JLabel("***Greentea***");
+			lb_Greentea.setVerticalAlignment(SwingConstants.TOP);
+			lb_Greentea.setHorizontalTextPosition(SwingConstants.LEFT);
+			lb_Greentea.setForeground(Color.YELLOW);
+			lb_Greentea.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 18));
+			lb_Greentea.setBackground(Color.BLUE);
+			lb_Greentea.setBounds(164, 298, 255, 134);
+			Order.getContentPane().add(lb_Greentea);
+			
+			final JSpinner spin_H_Latte = new JSpinner();
+			spin_H_Latte.setBounds(667, 336, 51, 20);
+			spin_H_Latte.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_H_Latte);
+			
+			final JSpinner spin_I_Latte = new JSpinner();
+			spin_I_Latte.setBounds(667, 366, 51, 20);
+			spin_I_Latte.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_I_Latte);
+			
+			final JSpinner spin_B_Latte = new JSpinner();
+			spin_B_Latte.setBounds(667, 399, 51, 20);
+			spin_B_Latte.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_B_Latte);
+			
+			JLabel lb_H_Latte = new JLabel("  Hot (25/cup)");
+			lb_H_Latte.setOpaque(true);
+			lb_H_Latte.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_H_Latte.setBackground(new Color(255, 160, 122));
+			lb_H_Latte.setBounds(559, 332, 163, 27);
+			Order.getContentPane().add(lb_H_Latte);
+			
+			JLabel lb_I_Latte = new JLabel("  Iced (35/cup)");
+			lb_I_Latte.setOpaque(true);
+			lb_I_Latte.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_I_Latte.setBackground(new Color(175, 238, 238));
+			lb_I_Latte.setBounds(559, 363, 163, 27);
+			Order.getContentPane().add(lb_I_Latte);
+			
+			JLabel lb_B_Latte = new JLabel("  Blened (40/cup)");
+			lb_B_Latte.setToolTipText("");
+			lb_B_Latte.setOpaque(true);
+			lb_B_Latte.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_B_Latte.setBackground(new Color(221, 160, 221));
+			lb_B_Latte.setBounds(559, 395, 163, 27);
+			Order.getContentPane().add(lb_B_Latte);
+			
+			JLabel lb_Latte = new JLabel("***Latte***");
+			lb_Latte.setVerticalAlignment(SwingConstants.TOP);
+			lb_Latte.setHorizontalTextPosition(SwingConstants.LEFT);
+			lb_Latte.setForeground(Color.YELLOW);
+			lb_Latte.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 18));
+			lb_Latte.setBackground(Color.BLUE);
+			lb_Latte.setBounds(454, 298, 255, 134);
+			Order.getContentPane().add(lb_Latte);
+			
+			final JSpinner spin_H_Milktea = new JSpinner();
+			spin_H_Milktea.setBounds(226, 490, 51, 20);
+			spin_H_Milktea.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_H_Milktea);
+			
+			final JSpinner spin_I_Milktea = new JSpinner();
+			spin_I_Milktea.setBounds(226, 520, 51, 20);
+			spin_I_Milktea.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_I_Milktea);
+			
+			final JSpinner spin_B_Milktea = new JSpinner();
+			spin_B_Milktea.setBounds(226, 553, 51, 20);
+			spin_B_Milktea.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_B_Milktea);
+			
+			JLabel lb_H_Milktea = new JLabel("  Hot (25/cup)");
+			lb_H_Milktea.setOpaque(true);
+			lb_H_Milktea.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_H_Milktea.setBackground(new Color(255, 160, 122));
+			lb_H_Milktea.setBounds(118, 487, 163, 27);
+			Order.getContentPane().add(lb_H_Milktea);
+			
+			JLabel lb_I_Milktea = new JLabel("  Iced (35/cup)");
+			lb_I_Milktea.setOpaque(true);
+			lb_I_Milktea.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_I_Milktea.setBackground(new Color(175, 238, 238));
+			lb_I_Milktea.setBounds(118, 518, 163, 27);
+			Order.getContentPane().add(lb_I_Milktea);
+			
+			JLabel lb_B_Milktea = new JLabel("  Blened (40/cup)");
+			lb_B_Milktea.setToolTipText("");
+			lb_B_Milktea.setOpaque(true);
+			lb_B_Milktea.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_B_Milktea.setBackground(new Color(221, 160, 221));
+			lb_B_Milktea.setBounds(118, 550, 163, 27);
+			Order.getContentPane().add(lb_B_Milktea);
+			
+			JLabel lb_Milktea = new JLabel("***Milktea***");
+			lb_Milktea.setVerticalAlignment(SwingConstants.TOP);
+			lb_Milktea.setHorizontalTextPosition(SwingConstants.LEFT);
+			lb_Milktea.setForeground(Color.YELLOW);
+			lb_Milktea.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 18));
+			lb_Milktea.setBackground(Color.BLUE);
+			lb_Milktea.setBounds(30, 453, 255, 134);
+			Order.getContentPane().add(lb_Milktea);
+			
+			final JSpinner spin_H_Mocha = new JSpinner();
+			spin_H_Mocha.setBounds(785, 490, 51, 20);
+			spin_H_Mocha.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_H_Mocha);
+			
+			final JSpinner spin_I_Mocha = new JSpinner();
+			spin_I_Mocha.setBounds(785, 520, 51, 20);
+			spin_I_Mocha.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_I_Mocha);
+			
+			final JSpinner spin_B_Mocha = new JSpinner();
+			spin_B_Mocha.setBounds(785, 553, 51, 20);
+			spin_B_Mocha.setModel(new SpinnerNumberModel(0, 0, stock, 1));
+			Order.getContentPane().add(spin_B_Mocha);
+			
+			JLabel lb_H_Mocha = new JLabel("  Hot (25/cup)");
+			lb_H_Mocha.setOpaque(true);
+			lb_H_Mocha.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_H_Mocha.setBackground(new Color(255, 160, 122));
+			lb_H_Mocha.setBounds(677, 487, 163, 27);
+			Order.getContentPane().add(lb_H_Mocha);
+			
+			JLabel lb_I_Mocha = new JLabel("  Iced (35/cup)");
+			lb_I_Mocha.setOpaque(true);
+			lb_I_Mocha.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_I_Mocha.setBackground(new Color(175, 238, 238));
+			lb_I_Mocha.setBounds(677, 518, 163, 27);
+			Order.getContentPane().add(lb_I_Mocha);
+			
+			JLabel lb_B_Mocha = new JLabel("  Blened (40/cup)");
+			lb_B_Mocha.setToolTipText("");
+			lb_B_Mocha.setOpaque(true);
+			lb_B_Mocha.setFont(new Font("JasmineUPC", Font.BOLD, 18));
+			lb_B_Mocha.setBackground(new Color(221, 160, 221));
+			lb_B_Mocha.setBounds(677, 550, 163, 27);
+			Order.getContentPane().add(lb_B_Mocha);
+			
+			JLabel lblmocha = new JLabel("***Mocha***");
+			lblmocha.setVerticalAlignment(SwingConstants.TOP);
+			lblmocha.setHorizontalTextPosition(SwingConstants.LEFT);
+			lblmocha.setForeground(Color.YELLOW);
+			lblmocha.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 18));
+			lblmocha.setBackground(Color.BLUE);
+			lblmocha.setBounds(589, 453, 255, 134);
+			Order.getContentPane().add(lblmocha);
+			
+			final TextArea output = new TextArea();
+			output.setFont(new Font("Tw Cen MT", Font.PLAIN, 15));
+			output.setEditable(false);
+			output.setBounds(897, 37, 412, 279);
+			Order.getContentPane().add(output);
+			
+			JLabel lb_pay = new JLabel("Pay");
+			lb_pay.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 20));
+			lb_pay.setBounds(953, 336, 300, 31);
+			Order.getContentPane().add(lb_pay);
+			
+			JLabel lb_baht = new JLabel("Baht");
+			lb_baht.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 20));
+			lb_baht.setBounds(1200, 336, 300, 31);
+			Order.getContentPane().add(lb_baht);
+			
+			final JTextField pay = new JTextField("0");
+			pay.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 16));
+			pay.setBounds(1067, 341, 90, 30);
+			Order.getContentPane().add(pay);
+			pay.setColumns(10);
+			
+			JLabel lb_ton = new JLabel("Change");
+			lb_ton.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 20));
+			lb_ton.setBounds(953, 388, 303, 34);
+			Order.getContentPane().add(lb_ton);
+			
+			final JTextArea ton = new JTextArea("0");
+			ton.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 16));
+			ton.setBounds(1067, 390, 90, 30);
+			Order.getContentPane().add(ton);
+			
+			JLabel lb_baht2 = new JLabel("Baht");
+			lb_baht2.setFont(new Font("Rockwell Extra Bold", Font.BOLD, 20));
+			//lb_pay.setForeground(Color.LIGHT_GRAY);
+			lb_baht2.setBounds(1200, 388, 300, 31);
+			Order.getContentPane().add(lb_baht2);
+			
+			JButton bt_end = new JButton();
+			bt_end.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+		
+					if(Integer.parseInt(pay.getText())>=total || Integer.parseInt(pay.getText())>=(total-(total*10/100)) ||Integer.parseInt(pay.getText())>=total+100)
+					{
+						for(int i=0;i<21;i++)
+						{
+							if(list[i]>0)
+							{
+							data.UpdateSell(list_m[i],list[i]);
+							data.UpdateBudget(list[i]);
+							data.UpdateStock("Cover_plastic", list[i]);
+							data.UpdateStock("Plastic_glass", list[i]);
+							data.UpdateStock("Straw", list[i]);
+							}
+						}
+						if(list[0]>0) data.UpdateStock("Cappucino_package", list[0]);
+						if(list[7]>0)data.UpdateStock("Cappucino_package", list[7]);
+						if(list[14]>0) data.UpdateStock("Cappucino_package", list[14]);
+						if(list[1]>0) data.UpdateStock("Chocolate_package", list[1]);
+						if(list[8]>0) data.UpdateStock("Chocolate_package", list[8]);
+						if(list[15]>0) data.UpdateStock("Chocolate_package", list[15]);
+						if(list[2]>0) data.UpdateStock("Espresso_package", list[2]);
+						if(list[9]>0) data.UpdateStock("Espresso_package", list[9]);
+						if(list[16]>0) data.UpdateStock("Espresso_package", list[16]);
+						if(list[3]>0) data.UpdateStock("Greentea_package", list[3]);
+						if(list[10]>0) data.UpdateStock("Greentea_package", list[10]);
+						if(list[17]>0) data.UpdateStock("Greentea_package", list[17]);
+						if(list[4]>0) data.UpdateStock("Latte_package", list[4]);
+						if(list[11]>0) data.UpdateStock("Latte_package", list[11]);
+						if(list[18]>0) data.UpdateStock("Latte_package", list[18]);
+						if(list[5]>0) data.UpdateStock("Milktea_package", list[5]);
+						if(list[12]>0) data.UpdateStock("Milktea_package", list[12]);
+						if(list[19]>0) data.UpdateStock("Milktea_package", list[19]);
+						if(list[6]>0) data.UpdateStock("Mocha_package", list[6]);
+						if(list[13]>0) data.UpdateStock("Mocha_package", list[13]);
+						if(list[20]>0) data.UpdateStock("Mocha_package", list[20]);
+					
+						if(select.equals("Customer")){
+						data.UpdateBudgetV2(total);
+						}
+						if(select.equals("Member")){
+						data.UpdateBudgetV2(total-(total*10)/100);
+						}
+						if(select.equals("Register")){
+						data.UpdateBudgetV2(total+100);
+						}
+						Order.setVisible(false);
+					}
+					else{
+						JOptionPane.showMessageDialog(Order,"Error! Insufficient funds","Error",JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			});
+			bt_end.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\finishButton.jpg"));
+			bt_end.setFont(new Font("JasmineUPC", Font.BOLD, 16));
+			bt_end.setFocusable(false);
+			bt_end.setBounds(1038, 537, 150, 50);
+			Order.getContentPane().add(bt_end);
+			
+			JButton bt_process = new JButton();
+			bt_process.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					int m_change = 0;
+					String m_process = "";
+					cash=Integer.parseInt(pay.getText());
+						if(select.equals("Customer")){
+							m_change=cash-total;
+							if(m_change>=0){
+							ton.setText(""+m_change);
+							m_process +="\nYour Cash :    "+pay.getText()+"      Baht\n"+
+										"\nChange :       "+m_change+"      Baht";}
+							else{
+								JOptionPane.showMessageDialog(Order,"Error! Insufficient funds","Error",JOptionPane.ERROR_MESSAGE);
+							}
+						}
+						if(select.equals("Member")){
+							m_change=cash-(total-(total*10/100));
+							if(m_change>=0){
+							ton.setText(""+m_change);
+							m_process +="\nYour Cash :    "+pay.getText()+"      Baht\n"+
+										"\n(This amount discounted 10% = "+(total-(total*10/100))+"      Baht)\n"+
+										"\nChange :       "+m_change+"      Baht";}
+							else{
+								JOptionPane.showMessageDialog(Order,"Error! Insufficient funds","Error",JOptionPane.ERROR_MESSAGE);
+							}
+						}
+							if(select.equals("Register")){
+								m_change=cash-(total+100);
+								if(m_change>=0){
+								ton.setText(""+m_change);
+								m_process +="\nYour Cash :    "+pay.getText()+"      Baht\n"+
+											"\n(This amount include subscription fees.	"+"100      Baht)\n"+
+											"\nChange :       "+m_change+"      Baht";}
+								else{
+									JOptionPane.showMessageDialog(Order,"Error! Insufficient funds","Error",JOptionPane.ERROR_MESSAGE);
+								}
+							}
+							message2=message+m_process;
+							output.setText(message2);
+					/*}
+					else
+					{
+						JOptionPane.showMessageDialog(Order,"Error! Insufficient funds","Error",JOptionPane.ERROR_MESSAGE);
+					}*/
+				}
+			});
+			bt_process.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\calculatebt.jpg"));
+			bt_process.setFocusable(false);
+			bt_process.setBounds(1038, 451, 150, 50);
+			Order.getContentPane().add(bt_process);
+			lbBG.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\menu-03.png"));
+			lbBG.setBounds(1, 1, 1357, 684);
+			Order.getContentPane().add(lbBG);
+			
+			ok_order.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					//getting inputs
+					list[0]= Integer.parseInt(String.valueOf(spin_H_Cappucino.getValue()));
+					list[1]= Integer.parseInt(String.valueOf(spin_H_Chocolate.getValue()));
+					list[2]= Integer.parseInt(String.valueOf(spin_H_Espresso.getValue()));
+					list[3]= Integer.parseInt(String.valueOf(spin_H_Greentea.getValue()));
+					list[4]= Integer.parseInt(String.valueOf(spin_H_Latte.getValue()));
+					list[5]= Integer.parseInt(String.valueOf(spin_H_Milktea.getValue()));
+					list[6]= Integer.parseInt(String.valueOf(spin_H_Mocha.getValue()));
+					list[7]= Integer.parseInt(String.valueOf(spin_I_Cappucino.getValue()));				
+					list[8]= Integer.parseInt(String.valueOf(spin_I_Chocolate.getValue()));
+					list[9]= Integer.parseInt(String.valueOf(spin_I_Espresso.getValue()));
+					list[10]= Integer.parseInt(String.valueOf(spin_I_Greentea.getValue()));
+					list[11]= Integer.parseInt(String.valueOf(spin_I_Latte.getValue()));
+					list[12]= Integer.parseInt(String.valueOf(spin_I_Milktea.getValue()));
+					list[13]= Integer.parseInt(String.valueOf(spin_I_Mocha.getValue()));
+					list[14]= Integer.parseInt(String.valueOf(spin_B_Cappucino.getValue()));
+					list[15]= Integer.parseInt(String.valueOf(spin_B_Chocolate.getValue()));
+					list[16]= Integer.parseInt(String.valueOf(spin_B_Espresso.getValue()));
+					list[17]= Integer.parseInt(String.valueOf(spin_B_Greentea.getValue()));
+					list[18]= Integer.parseInt(String.valueOf(spin_B_Latte.getValue()));
+					list[19]= Integer.parseInt(String.valueOf(spin_B_Milktea.getValue()));
+					list[20]= Integer.parseInt(String.valueOf(spin_B_Mocha.getValue()));
+					total=0;
+					message="";
+					
+					if(select.equals("Customer")){
+						output.setText(printOrder());
+						//output.setText("\nYour Cash : "+pay.getText()+"    Baht");
+					}
+					if(select.equals("Member")){
+						output.setText(printOrdermember());
+					}
+					if(select.equals("Register")){
+						output.setText(printOrderregister());
+					}
+					//Order.setVisible(false);
+				}
+			});
+			Order.setVisible(true);
+		}
+
+	public static String printOrder() {
+		for(int i=0;i<12;i++){
+			if(list[i]>0){
+				if(list_m[i].length()<12){
+				message += list_m[i]+"		"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";}
+				else{
+					message += list_m[i]+"	"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";
+				}
+				total += cost[i]*list[i];
+			}
+			
+		}
+		for(int i=13;i<18;i++){
+			if(list[i]>0){
+				if(list_m[i].length()<12){
+				message += list_m[i]+"		"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";}
+				else{
+					message += list_m[i]+"	"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";
+				}
+				total += cost[i]*list[i];
+			}
+		}
+		for(int i=19;i<21;i++){
+			if(list[i]>0){
+				if(list_m[i].length()<12){
+				message += list_m[i]+"		"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";}
+				else{
+					message += list_m[i]+"	"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";
+				}
+				total += cost[i]*list[i];
+			}
+		}
+		if(list[12]>0)
+		{
+			message += list_m[12]+"		"+"x "+(""+list[12])+"	"+(cost[12]* list[12])+"   Baht"+"\n\n";
+			total += cost[12]*list[12];
+		}
+		if(list[18]>0)
+		{
+			message += list_m[18]+"		"+"x "+(""+list[18])+"	"+(cost[18]* list[18])+"   Baht"+"\n\n";
+			total += cost[18]*list[18];
+		}
+		return message +="Total  >>>>>> " + total+"  Baht\n";
+	}
+
+	public static String printOrdermember() {
+		for(int i=0;i<12;i++){
+			if(list[i]>0){
+				if(list_m[i].length()<12){
+				message += list_m[i]+"		"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";}
+				else{
+					message += list_m[i]+"	"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";
+				}
+				total += cost[i]*list[i];
+			}
+			
+		}
+		for(int i=13;i<18;i++){
+			if(list[i]>0){
+				if(list_m[i].length()<12){
+				message += list_m[i]+"		"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";}
+				else{
+					message += list_m[i]+"	"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";
+				}
+				total += cost[i]*list[i];
+			}
+		}
+		for(int i=19;i<21;i++){
+			if(list[i]>0){
+				if(list_m[i].length()<12){
+				message += list_m[i]+"		"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";}
+				else{
+					message += list_m[i]+"	"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";
+				}
+				total += cost[i]*list[i];
+			}
+		}
+		if(list[12]>0)
+		{
+			message += list_m[12]+"		"+"x "+(""+list[12])+"	"+(cost[12]* list[12])+"   Baht"+"\n\n";
+			total += cost[12]*list[12];
+		}
+		if(list[18]>0)
+		{
+			message += list_m[18]+"		"+"x "+(""+list[18])+"	"+(cost[18]* list[18])+"   Baht"+"\n\n";
+			total += cost[18]*list[18];
+		}
+		message += "Member discount 10%       "+(total*10)/100+"   Baht"+"\n\n";
+		return message +="Total  >>>>>> " + (total-(total*10)/100)+"\n";
+	}
+		
+	public static String printOrderregister() {
+		for(int i=0;i<12;i++){
+			if(list[i]>0){
+				if(list_m[i].length()<12){
+				message += list_m[i]+"		"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";}
+				else{
+					message += list_m[i]+"	"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";
+				}
+				total += cost[i]*list[i];
+			}
+			
+		}
+		for(int i=13;i<18;i++){
+			if(list[i]>0){
+				if(list_m[i].length()<12){
+				message += list_m[i]+"		"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";}
+				else{
+					message += list_m[i]+"	"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";
+				}
+				total += cost[i]*list[i];
+			}
+		}
+		for(int i=19;i<21;i++){
+			if(list[i]>0){
+				if(list_m[i].length()<12){
+				message += list_m[i]+"		"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";}
+				else{
+					message += list_m[i]+"	"+"x "+(""+list[i])+"	"+(cost[i]* list[i])+"   Baht"+"\n\n";
+				}
+				total += cost[i]*list[i];
+			}
+		}
+		if(list[12]>0)
+		{
+			message += list_m[12]+"		"+"x "+(""+list[12])+"	"+(cost[12]* list[12])+"   Baht"+"\n\n";
+			total += cost[12]*list[12];
+		}
+		if(list[18]>0)
+		{
+			message += list_m[18]+"		"+"x "+(""+list[18])+"	"+(cost[18]* list[18])+"   Baht"+"\n\n";
+			total += cost[18]*list[18];
+		}
+		message += "Registration fee		100  Baht"+"\n\n";
+		return message +="Total  >>>>>> " + (total+100)+"    Baht"+"\n";
+	}
+		public static String getSelect() {
+			return select;
+		}
+		public static void setSelect(String count) {
+			Menu.select = count;
+		}
+		public static String getMessage() {
+			return message;
+		}
+		public static String getMessage2() {
+			return message2;
+		}
+}
