@@ -1,0 +1,920 @@
+package oop;
+import java.sql.*;
+public class Database {
+        private Connection connect = null;
+        private Statement statement = null;
+        private PreparedStatement prepare = null;
+        private ResultSet resultSet = null;
+        private String Idemployee;
+        private String Idmanager;
+        private String Idmember;
+        private String Firstname;
+        private String Lastname;
+        private String email;
+        private String numberphone;
+        private String Productname;
+        private int countsell;
+        private int money;
+        private String Stockname;
+        
+        
+        //test connection.
+        public void readDataBase() throws Exception {
+            try {
+            	Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+
+    			if(connect != null){
+    				System.out.println("Database Connected.");
+    			} else {
+    				System.out.println("Database Connect Failed.");
+    			}
+
+            } catch (Exception e) {
+                throw e;
+            } finally {
+                close();
+            }
+
+        }
+        
+        //Check id member in Database.
+        public  boolean SearchMember(String Idmember){
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+    			
+    			statement = connect.createStatement();
+    			
+    			
+    			String sql = "SELECT * FROM  chujaimember WHERE idmember LIKE '%" + Idmember + "%' ";
+    			
+    			ResultSet rec = statement.executeQuery(sql);
+
+    			if((rec!=null) && (rec.next())){
+    				return true;
+    				}
+    			else{
+    				return false;
+    				}
+                 
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+			return false;
+        }
+        
+        //Check id employee in Database.
+        public boolean Searchemployee(String Idemployee)
+        {
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+    			
+    			statement = connect.createStatement();
+    			
+    			
+    			String sql = "SELECT * FROM  chujai_employee WHERE idemployee LIKE '%" + Idemployee + "%' ";
+    			
+    			ResultSet rec = statement.executeQuery(sql);
+
+    			if((rec!=null) && (rec.next())){
+    				return true;
+    				}
+    			else{
+    				return false;
+    				}
+                 
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+			return false;
+        }
+        
+
+		//Check id manager in Database.
+        public boolean Searchmanager(String Idmanager)
+        {
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+    			
+    			statement = connect.createStatement();
+    			
+    			
+    			String sql = "SELECT * FROM  chujai_manager WHERE idmanager LIKE '%" + Idmanager + "%' ";
+    			
+    			ResultSet rec = statement.executeQuery(sql);
+
+    			if((rec!=null) && (rec.next())){
+    				return true;
+    				}
+    			else{
+    				return false;
+    				}
+                 
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+			return false;
+        }
+        
+        //return id member.
+        public String Showidmember(String Firstname)
+        {
+     	   String idname = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujaimember WHERE First_Name LIKE '%" + Firstname + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					idname += rec.getString("idmember");
+                    }
+         			return idname;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return idname;
+        }
+
+		//Show detail Member
+        public String ShowFirstmember(String Idmember)
+        {
+        	String firstname = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujaimember WHERE idmember LIKE '%" + Idmember + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					firstname += rec.getString("First_Name");
+                    }
+         			return firstname;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return firstname;
+        }
+        
+        public String ShowLastmember(String Idmember)
+        {
+        	String lastname = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujaimember WHERE idmember LIKE '%" + Idmember + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					lastname += rec.getString("Last_Name");
+                    }
+         			return lastname;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return lastname;
+        }
+        
+        public String ShowMailmember(String Idmember)
+        {
+        	String mail = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujaimember WHERE idmember LIKE '%" + Idmember + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					mail += rec.getString("Email");
+                    }
+         			return mail;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return mail;
+        }
+        
+        public String ShowMobilemember(String Idmember)
+        {
+        	String mobile = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujaimember WHERE idmember LIKE '%" + Idmember + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					mobile += rec.getString("Mobile_number");
+                    }
+         			return mobile;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return mobile;
+        }
+
+        
+        //Show detail employee
+        public String ShowFirstemployee(String Idemployee)
+        {
+     	   String idname = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujai_employee WHERE idemployee LIKE '%" + Idemployee + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					idname += rec.getString("First_Name");
+                    }
+         			return idname;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return idname;
+        }
+        
+        public String ShowLastemployee(String Idemployee)
+        {
+     	   String idname = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujai_employee WHERE idemployee LIKE '%" + Idemployee + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					idname += rec.getString("Last_Name");
+                    }
+         			return idname;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return idname;
+        }
+        
+        public String ShowMailemployee(String Idemployee)
+        {
+     	   String idname = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujai_employee WHERE idemployee LIKE '%" + Idemployee + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					idname += rec.getString("Email");
+                    }
+         			return idname;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return idname;
+        }
+        
+        public String ShowMobileemployee(String Idemployee)
+        {
+     	   String idname = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujai_employee WHERE idemployee LIKE '%" + Idemployee + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					idname += rec.getString("Mobile");
+                    }
+         			return idname;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return idname;
+        }
+        
+        //Show detail Manger
+        public String ShowFirstmanager(String Idemanager)
+        {
+     	   String idname = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujai_manager WHERE idmanager LIKE '%" + Idemanager + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					idname += rec.getString("First_Name");
+                    }
+         			return idname;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return idname;
+        }
+        
+        public String ShowLastmanager(String Idemanager)
+        {
+     	   String idname = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujai_manager WHERE idmanager LIKE '%" + Idemanager + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					idname += rec.getString("Last_Name");
+                    }
+         			return idname;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return idname;
+        }
+        
+        public String ShowMailmanager(String Idemanager)
+        {
+     	   String idname = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujai_manager WHERE idmanager LIKE '%" + Idemanager + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					idname += rec.getString("Email");
+                    }
+         			return idname;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return idname;
+        }
+       
+        public String ShowMobilemanager(String Idemanager)
+        {
+     	   String idname = "";
+     		try {
+        			Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			statement = connect.createStatement();
+        			
+        			String sql = "SELECT * FROM  chujai_manager WHERE idmanager LIKE '%" + Idemanager + "%' ";
+        			
+        			ResultSet rec = statement.executeQuery(sql);
+        			
+        			while((rec!=null) && (rec.next()))
+                    {
+        					idname += rec.getString("Mobile");
+                    }
+         			return idname;
+        		} catch (Exception e) {
+        			// TODO Auto-generated catch block
+        			e.printStackTrace();
+        		}
+ 			return idname;
+        }
+        
+        
+        //count row table of Chujai member.
+        public int countrow()
+        {
+    		try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+    			
+    			String sql = "SELECT COUNT(idmember) FROM chujaimember";
+    			statement = connect.createStatement();
+    			resultSet = statement.executeQuery(sql);
+    			 while (resultSet.next())
+    			    {
+    			        return resultSet.getInt(1);
+    			    }
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+			return 0;
+        }
+        
+        //Create new member.
+        public void insert(String Firstname, String Lastname, String numberphone, String email)
+        {
+        	int number = 10000;
+        	int numberrow = countrow();
+        	numberrow+=1;
+        	String idnumber = number+numberrow+"";
+           	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+    			
+    			String sql = "INSERT INTO chujaimember " +"(idmember,First_Name,Last_Name,Mobile_number,Email,Point) " + 
+    					"VALUES (?,?,?,?,?,?) ";
+    			prepare = connect.prepareStatement(sql);
+    			prepare.setString(1, idnumber);
+    			prepare.setString(2, Firstname);
+    			prepare.setString(3, Lastname);
+    			prepare.setString(4, numberphone);
+    			prepare.setString(5, email);
+    			prepare.setInt(6, 0);
+    			
+    			prepare.executeUpdate();
+    			
+                 
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        }
+        
+        //return point in table by search id member.
+        public int Point(String Idmember){
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+    			
+    			statement = connect.createStatement();
+    			
+    			int point = 0;
+    			String sql = "SELECT * FROM  chujaimember WHERE idmember LIKE '%" + Idmember + "%' ";
+    			
+    			ResultSet rec = statement.executeQuery(sql);
+    			
+    			while((rec!=null) && (rec.next()))
+                {
+    					point = rec.getInt("Point");
+                }
+                return point;
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+			return 0;
+        }
+        
+        //update point for member.
+        public void UpdatePoint(String Idmember){
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    						"?user=root&password=password");
+    			
+    			String sql = "UPDATE chujaimember " +"SET Point = ? " +" WHERE idmember = ? ";
+                 
+    			prepare = connect.prepareStatement(sql);
+    			prepare.setInt(1, Point(Idmember)+1);
+    			prepare.setString(2, Idmember);
+    			
+    			prepare.executeUpdate();
+    			
+                 
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        }
+        
+        //return value in column sell of product
+        public int Sell(String Productname){
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+    			
+    			statement = connect.createStatement();
+    			
+    			int sell = 0;
+    			String sql = "SELECT * FROM  chujai_product WHERE Product LIKE '%" + Productname + "%' ";
+    			
+    			ResultSet rec = statement.executeQuery(sql);
+    			
+    			while((rec!=null) && (rec.next()))
+                {
+    					sell = rec.getInt("sell");
+                }
+                return sell;
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+			return 0;
+        }
+
+        //update sell.
+        public void UpdateSell(String Productname, int countsell)
+        {
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    						"?user=root&password=password");
+    			
+    			String sql = "UPDATE chujai_product " +"SET sell = ? " +" WHERE Product = ? ";
+                 
+    			prepare = connect.prepareStatement(sql);
+    			prepare.setInt(1, Sell(Productname)+countsell);
+    			prepare.setString(2, Productname);
+    			
+    			prepare.executeUpdate();
+    			
+                 
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        }
+        
+        //sum of total login
+        public int Sumpoint(){
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+    			
+    			String sql = "SELECT SUM(point) FROM chujaimember";
+    			statement = connect.createStatement();
+    			resultSet = statement.executeQuery(sql);
+    			 while (resultSet.next())
+    			    {
+    			        return resultSet.getInt(1);
+    			    }
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        	return 0;
+        }
+        
+        //total income.
+        public int Sumsell(){
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+    			
+    			String sql = "SELECT SUM(price*sell) FROM chujai_product";
+    			statement = connect.createStatement();
+    			resultSet = statement.executeQuery(sql);
+    			 while (resultSet.next())
+    			    {
+    			        return resultSet.getInt(1);
+    			    }
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+			return 0;
+        
+        }
+        
+        //return stock in Database.
+        public int Stock(String Stockname)
+        {
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+    			
+    			statement = connect.createStatement();
+    			
+    			int stock = 0;
+    			String sql = "SELECT * FROM  chujai_stock WHERE Product LIKE '%" + Stockname + "%' ";
+    			
+    			ResultSet rec = statement.executeQuery(sql);
+    			
+    			while((rec!=null) && (rec.next()))
+                {
+    					stock = rec.getInt("stock");
+                }
+                return stock;
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+			return 0;
+        }
+        
+        //update stock.
+        public void UpdateStock(String Stockname,int countsell)
+        {
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    						"?user=root&password=password");
+    			
+    			String sql = "UPDATE chujai_stock " +"SET stock = ? " +" WHERE Product = ? ";
+                 
+    			prepare = connect.prepareStatement(sql);
+    			prepare.setInt(1, Stock(Stockname)-countsell);
+    			prepare.setString(2, Stockname);
+    			
+    			prepare.executeUpdate();
+    			
+                 
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        }
+        
+        public int TotalSell()
+        {
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+    			
+    			statement = connect.createStatement();
+    			
+    			int stock = 0;
+    			String sql = "SELECT * FROM  chujai_total WHERE Total LIKE '%" + "total" + "%' ";
+    			
+    			ResultSet rec = statement.executeQuery(sql);
+    			
+    			while((rec!=null) && (rec.next()))
+                {
+    					stock = rec.getInt("Sell");
+                }
+                return stock;
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+			return 0;
+        }
+        public int TotalBudget()
+        {
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    					"?user=root&password=password");
+    			
+    			statement = connect.createStatement();
+    			
+    			int stock = 0;
+    			String sql = "SELECT * FROM  chujai_total WHERE Total LIKE '%" + "total" + "%' ";
+    			
+    			ResultSet rec = statement.executeQuery(sql);
+    			
+    			while((rec!=null) && (rec.next()))
+                {
+    					stock = rec.getInt("Budget");
+                }
+                return stock;
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+			return 0;
+        }
+        public void UpdateBudget(int countsell)
+        {
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    						"?user=root&password=password");
+    			
+    			String sql = "UPDATE chujai_total " +"SET Sell = ? " +" WHERE Total = ? ";
+                 
+    			prepare = connect.prepareStatement(sql);
+    			prepare.setInt(1, TotalSell()+countsell);
+    			prepare.setString(2, "total");
+    			
+    			prepare.executeUpdate();
+    			
+                 
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        }
+        public void UpdateBudgetV2(int money)
+        {
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    						"?user=root&password=password");
+    			
+    			String sql = "UPDATE chujai_total " +"SET Budget = ? " +" WHERE Total = ? ";
+                 
+    			prepare = connect.prepareStatement(sql);
+    			prepare.setInt(1, TotalBudget()+money);
+    			prepare.setString(2, "total");
+    			
+    			prepare.executeUpdate();
+    			
+                 
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        }
+        
+        public int ShowStock(String Stockname)
+        {
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    						"?user=root&password=password");
+    			statement = connect.createStatement();
+    			
+    			int stock =0;
+    			
+    			String sql = "SELECT * FROM  chujai_stock WHERE Product LIKE '%" + Stockname + "%' ";
+    			
+    			ResultSet rec = statement.executeQuery(sql);
+    			
+    			while((rec!=null) && (rec.next()))
+                {
+    					stock = rec.getInt("stock");
+                }
+                return stock;
+                 
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        	return 0;
+        }
+        
+        public String Newmember()
+        {
+        	int number = 10000;
+        	int numberrow = countrow();
+        	String idnumber = number+numberrow+"";
+           	try {
+           		Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+    						"?user=root&password=password");
+    			statement = connect.createStatement();
+    			
+    			String idname ="";
+    			
+    			String sql = "SELECT * FROM  chujaimember WHERE idmember LIKE '%" + idnumber + "%' ";
+    			
+    			ResultSet rec = statement.executeQuery(sql);
+    			
+    			while((rec!=null) && (rec.next()))
+                {
+    					idname += rec.getInt("idmember");
+                }
+                return idname;
+                 
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+			return idnumber;
+        }
+        
+        public void Delete()
+        {
+        	int number = 10000;
+        	int numberrow = countrow();
+        	String idnumber = number+numberrow+"";
+        	try {
+    			Class.forName("com.mysql.jdbc.Driver");
+    			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+						"?user=root&password=password");
+    			
+    			String sql = "DELETE FROM chujaimember " +" WHERE idmember = ? ";
+                 
+    			prepare = connect.prepareStatement(sql);
+    			prepare.setString(1, idnumber);
+    			
+    			prepare.executeUpdate();
+    			
+                 
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		
+    		// Close
+    		try {
+    			if(connect != null){
+    	            prepare.close();
+    	            connect.close();
+    			}
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        }
+        
+        // You need to close the resultSet
+        private void close() {
+            try {
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+
+                if (statement != null) {
+                    statement.close();
+                }
+
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (Exception e) {
+
+            }
+        }
+
+}
