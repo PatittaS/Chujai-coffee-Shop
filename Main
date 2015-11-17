@@ -1,0 +1,983 @@
+package oop;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import oop.Menu;
+public class mainproject {
+	public static void main(String[] args) {
+		//create frame
+		final JFrame home = new JFrame();
+		home.setTitle("Chuchai Coffee Shop");
+		home.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		home.setSize(857,679);//866 685
+		home.setLayout(null);//857 679 860 680
+		home.setResizable(false);
+		home.setIconImage ( Toolkit.getDefaultToolkit ( ).getImage ("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\logo1.PNG"));
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		home.setLocation(dim.width/2-home.getSize().width/2, dim.height/2-home.getSize().height/2);
+		//set BG on label
+		final JLabel labelhome = new JLabel("");
+		labelhome.setSize(860,650);
+		home.add(labelhome);
+		labelhome.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\bg1.jpg"));
+		
+		//Button Customer
+		JButton CustomerButton = new JButton("");
+		CustomerButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\GenButton.jpg"));
+		labelhome.add(CustomerButton);
+		CustomerButton.setBounds(330, 300, 200, 50);
+		
+		//Button Member
+		JButton MemberButton = new JButton("");
+		MemberButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\MemButton.jpg"));
+		labelhome.add(MemberButton);
+		MemberButton.setBounds(330, 380, 200, 50);
+		
+		//Button Employee
+		final JButton EmployeeButton = new JButton("");
+		EmployeeButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\EmploButton.jpg"));
+		labelhome.add(EmployeeButton);
+		EmployeeButton.setBounds(330, 460, 200, 50);
+		
+		//Button Manager
+		final JButton ManagerButton = new JButton("");
+		ManagerButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\ManaButton.jpg"));
+		labelhome.add(ManagerButton);
+		ManagerButton.setBounds(330, 550, 200, 50);
+		
+		final JButton CreditButton = new JButton();
+		CreditButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\creditbt.jpg"));
+		labelhome.add(CreditButton);
+		CreditButton.setBounds(760, 570, 70, 70);
+		
+		final Database data = new Database();
+				
+		/////////////หน้าหลัก ปุ่มGeneral///////////////////////////////		
+		CustomerButton.addActionListener(new ActionListener() {
+			//Link window General
+			public void actionPerformed(ActionEvent event) {
+				//labelCustomer
+				//เรียกหน้า เมนูมาสั่ง//
+				final Menu select = new Menu();
+				select.setSelect("Customer");
+				
+				final JPanel order = new JPanel();
+				order.setSize(860,650);
+				home.getContentPane().add(order);
+				order.setLayout(null);
+				
+				final JLabel labelorder = new JLabel();
+				labelorder.setSize(860,650);
+				order.add(labelorder);
+				labelorder.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Thankyou.jpg"));
+				
+				JButton ok = new JButton();
+				ok.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\detailButton.jpg"));
+				ok.setBounds(150, 350, 150, 50);
+				labelorder.add(ok);
+					
+				JButton bt_home = new JButton();
+				bt_home.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton02.jpg"));
+				bt_home.setBounds(500, 350, 150, 50);
+				labelorder.add(bt_home);
+				//******* หน้ารายละเอียด >>>>>> กดปุ่ม home ********//
+				bt_home.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent c) {
+						home.getContentPane().remove(order);
+						home.getContentPane().add(labelhome);
+						home.getContentPane().validate();
+						home.getContentPane().repaint();
+					}
+				});
+	            //******* หน้ารายการที่สั่ง >>>>>> กดปุ่ม OK ********//
+				ok.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent c) {
+						//######### หน้ารายละเอียดการซื้อ  #########//
+						final JPanel total_all = new JPanel();					
+						total_all.setBounds(0, 0, 860, 650);
+						home.getContentPane().add(total_all);
+						total_all.setLayout(null);
+				
+						final JLabel labeltotal = new JLabel("");
+						labeltotal.setSize(860,650);
+						total_all.add(labeltotal);
+						labeltotal.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Detai02.jpg"));
+						
+						JTextArea output2 = new JTextArea();
+						output2.setEditable(false);
+						output2.setBounds(195, 125, 439, 362);
+						output2.setText("	 ***General Customer***"+"\n"+Menu.getMessage2());
+						output2.setFont(new Font("Tw Cen MT", Font.PLAIN, 20));
+						labeltotal.add(output2);
+				
+						final JButton bt_home2 = new JButton();
+						bt_home2.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton02.jpg"));
+						bt_home2.setBounds(348, 520, 150, 50);
+						labeltotal.add(bt_home2);
+						//******* หน้ารายละเอียด >>>>>> กดปุ่ม home ********//
+						bt_home2.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent c) {
+								home.getContentPane().remove(total_all);
+								home.getContentPane().add(labelhome);
+								home.getContentPane().validate();
+								home.getContentPane().repaint();		
+							}
+						});
+					
+						JLabel lbdetail = new JLabel("Detail");
+						lbdetail.setFont(new Font("Tahoma", Font.PLAIN, 30));
+						lbdetail.setBounds(224, 39, 394, 42);
+						total_all.add(lbdetail);
+						home.getContentPane().remove(order);
+						home.getContentPane().add(total_all);
+						home.getContentPane().validate();
+						home.getContentPane().repaint();
+						}
+					});
+							
+				home.getContentPane().remove(labelhome);
+				home.getContentPane().add(order);
+				home.getContentPane().validate();
+				home.getContentPane().repaint();
+						
+			}});
+		
+	
+	/////////////หน้าหลัก ปุ่มmember///////////////////////////////
+		MemberButton.addActionListener(new ActionListener() {
+			//Link window member
+			public void actionPerformed(ActionEvent event) {
+				
+					//labelMember
+					final JLabel labelMember = new JLabel("");
+					labelMember.setSize(860,650);
+					home.add(labelMember);
+					labelMember.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\member02.jpg"));
+
+					JLabel idmember = new JLabel("ID");
+					idmember.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 80));
+					idmember.setBounds(470, 330, 200, 80);
+					labelMember.add(idmember);
+					
+					final JTextField inputBoxid = new JTextField();
+					labelMember.add(inputBoxid);
+					inputBoxid.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15));
+					inputBoxid.setBounds(380, 430, 250, 30);
+					
+					//Button OK
+					JButton OKButton = new JButton("");
+					OKButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Okbutton02.png"));
+					labelMember.add(OKButton);
+					OKButton.setBounds(650, 420, 150, 50);
+					
+					//Button Register
+					JButton RegisterButton = new JButton();
+					RegisterButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\registerButton.jpg"));
+					labelMember.add(RegisterButton);
+					RegisterButton.setBounds(445, 500, 160, 50);
+				OKButton.addActionListener(new ActionListener() {
+				//Link window OK
+					public void actionPerformed(ActionEvent event) {
+						final String idmem = inputBoxid.getText();
+						try{
+							//final String id = inputBoxid.getText();
+							if(idmem.equals("")){
+								JOptionPane.showMessageDialog(labelMember,"Error! ID is not member.","Error",JOptionPane.ERROR_MESSAGE);
+							}
+	
+							else{		
+								if(data.SearchMember(idmem))
+								{	
+									data.UpdatePoint(idmem);
+									
+									//labeldetail
+									final JLabel labeldetail = new JLabel("");
+									labeldetail.setSize(860,650);
+									home.add(labeldetail);
+									labeldetail.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Detai02.jpg"));
+					
+									JLabel YourID = new JLabel("Your ID member >> "+idmem);
+									YourID.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+									YourID.setBounds(200, 200, 500, 100);
+									labeldetail.add(YourID);
+									
+									JLabel showFirstandLast = new JLabel("Name >>  "+data.ShowFirstmember(idmem)+"     " +data.ShowLastmember(idmem));
+									showFirstandLast.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+									showFirstandLast.setBounds(200, 250, 500, 100);
+									labeldetail.add(showFirstandLast);
+									
+									JLabel showPhone = new JLabel("Phone number >>  "+data.ShowMobilemember(idmem));
+									showPhone.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+									showPhone.setBounds(200, 300, 500, 100);
+									labeldetail.add(showPhone);
+									
+									JLabel showEmail = new JLabel("Email >>  "+data.ShowMailmember(idmem));
+									showEmail.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+									showEmail.setBounds(200, 350, 500, 100);
+									labeldetail.add(showEmail);
+									
+									JLabel showCount = new JLabel("Count login >>  "+data.Point(idmem));
+									showCount.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+									showCount.setBounds(200, 400, 500, 100);
+									labeldetail.add(showCount);
+									
+									//Button Order
+									JButton OrderButton = new JButton();
+									OrderButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\orderButton.jpg"));
+									labeldetail.add(OrderButton);
+									OrderButton.setBounds(390, 550, 100, 50);
+									
+									OrderButton.addActionListener(new ActionListener() {
+										//Link window Order
+										public void actionPerformed(ActionEvent event) {	
+											final JLabel totalall = new JLabel("");
+											totalall.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Thankyou.jpg"));
+											totalall.setSize(860,650);
+											home.add(totalall);
+											
+						
+											if(data.Point(idmem)>0)
+											{
+												final Menu select = new Menu();
+												select.setSelect("Member");
+											}
+											else
+											{
+												final Menu select = new Menu();
+												select.setSelect("Customer");
+											}
+											
+											final JButton HomeButton1 = new JButton();
+											HomeButton1.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton02.jpg"));
+											HomeButton1.setBounds(500, 350, 150, 50);
+											totalall.add(HomeButton1);
+											//******* หน้ารายละเอียด >>>>>> กดปุ่ม home ********//
+											HomeButton1.addActionListener(new ActionListener() {
+												public void actionPerformed(ActionEvent c) {
+													home.getContentPane().remove(totalall);
+													home.getContentPane().add(labelhome);
+													home.getContentPane().validate();
+													home.getContentPane().repaint();		
+												}
+											});
+											JButton ok = new JButton();
+											ok.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\detailButton.jpg"));
+											ok.setBounds(150, 350, 150, 50);;
+											ok.setBackground(UIManager.getColor("MenuBar.shadow"));
+											totalall.add(ok);
+											ok.addActionListener(new ActionListener() {
+												public void actionPerformed(ActionEvent c) {
+														//######### หน้ารายละเอียดการซื้อ  #########//
+														final JLabel totalall2 = new JLabel();
+														totalall2.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Detai02.jpg"));
+														totalall2.setSize(860,650);
+														home.getContentPane().add(totalall2);
+														
+														JTextArea output2 = new JTextArea();
+														output2.setFont(new Font("Tw Cen MT", Font.PLAIN, 20));
+														output2.setEditable(false);
+														output2.setBounds(192, 125, 439, 362);
+														output2.setText("	 ***Member Id:  "+idmem+"\n"+Menu.getMessage2());
+														totalall2.add(output2);
+							
+												
+														final JButton bt_home2 = new JButton();
+														bt_home2.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton02.jpg"));
+														bt_home2.setBounds(348, 520, 150, 50);
+														totalall2.add(bt_home2);
+														//******* หน้ารายละเอียด >>>>>> กดปุ่ม home ********//
+														bt_home2.addActionListener(new ActionListener() {
+															public void actionPerformed(ActionEvent c) {
+																home.getContentPane().remove(totalall2);
+																home.getContentPane().add(labelhome);
+																home.getContentPane().validate();
+																home.getContentPane().repaint();		
+															}
+														});
+														home.getContentPane().remove(totalall);
+														home.getContentPane().add(totalall2);
+														home.getContentPane().validate();
+														home.getContentPane().repaint();
+													}
+												});
+										home.getContentPane().remove(labeldetail);
+										home.getContentPane().add(totalall);
+										home.getContentPane().validate();
+										home.getContentPane().repaint();
+										}
+									});
+									//Button Home
+									JButton HomeButton = new JButton("");
+									HomeButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton.jpg"));
+									labeldetail.add(HomeButton);
+									HomeButton.setBounds(750, 590, 100, 50);
+									HomeButton.addActionListener(new ActionListener() {
+									//Link window Home
+									public void actionPerformed(ActionEvent event) {	
+										home.getContentPane().remove(labeldetail);
+										home.getContentPane().add(labelhome);
+										home.getContentPane().validate();
+										home.getContentPane().repaint();
+										
+									}
+									});
+									home.getContentPane().remove(labelMember);
+									home.getContentPane().add(labeldetail);
+									home.getContentPane().validate();
+									home.getContentPane().repaint();
+								}
+								else
+									JOptionPane.showMessageDialog(labelMember,"Error! ID is not member.","Error",JOptionPane.ERROR_MESSAGE);
+						
+							}}catch(Exception e){
+						//if error, show popup
+								JOptionPane.showMessageDialog(labelMember,"Error! ID is not member.","Error",JOptionPane.ERROR_MESSAGE);	
+					}
+					
+				}});
+				
+				//Button Home
+				JButton HomeButton = new JButton("");
+				HomeButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton.jpg"));
+				labelMember.add(HomeButton);
+				HomeButton.setBounds(750, 590, 100, 50);
+				HomeButton.addActionListener(new ActionListener() {
+					//Link window Home
+					public void actionPerformed(ActionEvent event) {	
+						home.getContentPane().remove(labelMember);
+						home.getContentPane().add(labelhome);
+						home.getContentPane().validate();
+						home.getContentPane().repaint();
+						}
+				});
+				RegisterButton.addActionListener(new ActionListener() {
+					//Link window Home
+					public void actionPerformed(ActionEvent event) {	
+						new Register();	
+						final JPanel order = new JPanel();
+						order.setSize(860,650);
+						home.getContentPane().add(order);
+						order.setLayout(null);
+						
+						final JLabel labelorder = new JLabel("");
+						labelorder.setSize(860,650);
+						order.add(labelorder);
+						labelorder.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Thankyou.jpg"));
+						
+						JButton ok = new JButton();
+						ok.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\detailButton.jpg"));
+						ok.setBounds(150, 350, 150, 50);
+						labelorder.add(ok);
+							
+						JButton bt_home = new JButton();
+						bt_home.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton02.jpg"));
+						bt_home.setBounds(500, 350, 150, 50);
+						labelorder.add(bt_home);
+						//******* หน้ารายละเอียด >>>>>> กดปุ่ม home ********//
+						bt_home.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent c) {
+								home.getContentPane().remove(order);
+								home.getContentPane().add(labelhome);
+								home.getContentPane().validate();
+								home.getContentPane().repaint();
+							}
+						});
+						ok.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent c) {
+									//######### หน้ารายละเอียดการซื้อ  #########//
+									final JPanel total_all = new JPanel();					
+									total_all.setBounds(0, 0, 860, 650);
+									home.getContentPane().add(total_all);
+									total_all.setLayout(null);
+							
+									final JLabel labeltotal = new JLabel("");
+									labeltotal.setSize(860,650);
+									total_all.add(labeltotal);
+									labeltotal.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Detai02.jpg"));
+									
+									JTextArea output2 = new JTextArea();
+									output2.setFont(new Font("Tw Cen MT", Font.PLAIN, 20));
+									output2.setEditable(false);
+									output2.setBounds(195, 125, 439, 362);
+									labeltotal.add(output2);
+									output2.setText("	 ***Member Id:  "+data.Newmember()+"\n"+Menu.getMessage2());
+							
+									final JButton bt_home2 = new JButton();
+									bt_home2.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton02.jpg"));
+									bt_home2.setBounds(348, 520, 150, 50);
+									labeltotal.add(bt_home2);
+									//******* หน้ารายละเอียด >>>>>> กดปุ่ม home ********//
+									bt_home2.addActionListener(new ActionListener() {
+										public void actionPerformed(ActionEvent c) {
+											home.getContentPane().remove(total_all);
+											home.getContentPane().add(labelhome);
+											home.getContentPane().validate();
+											home.getContentPane().repaint();		
+										}
+									});
+								
+									home.getContentPane().remove(order);
+									home.getContentPane().add(total_all);
+									home.getContentPane().validate();
+									home.getContentPane().repaint();
+									}
+								});
+						
+						home.getContentPane().remove(labelMember);
+						home.getContentPane().add(order);
+						home.getContentPane().validate();
+						home.getContentPane().repaint();
+			            
+					}});
+		home.getContentPane().remove(labelhome);
+		home.getContentPane().add(labelMember);
+		home.getContentPane().validate();
+		home.getContentPane().repaint();
+			}
+		});
+		/////////////หน้าหลัก ปุ่มEmployee///////////////////////////////
+		EmployeeButton.addActionListener(new ActionListener() {
+			//Link window Employee
+			public void actionPerformed(ActionEvent event) {
+				//label Employee
+				final JLabel labelEmployee = new JLabel("");
+				labelEmployee.setSize(860,650);
+				home.add(labelEmployee);
+				labelEmployee.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Employee03.jpg"));
+				
+				
+				JLabel idmember = new JLabel("Employee ID");
+				idmember.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 50));
+				idmember.setBounds(370, 330, 600, 80);
+				labelEmployee.add(idmember);
+				
+				
+				final JTextField inputBox = new JTextField();
+				inputBox.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15));
+				labelEmployee.add(inputBox);
+				inputBox.setBounds(450, 420, 250, 30);
+				
+				//Button OK to Detail
+				JButton OKButton = new JButton("");
+				OKButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Okbutton02.png"));
+				labelEmployee.add(OKButton);
+				OKButton.setBounds(500, 480, 150, 50);
+				
+				//create page2
+				final JLabel page2 = new JLabel("");
+				page2.setSize(850,650);
+				
+				//set BG on label
+				final JLabel Backgoundpage2 = new JLabel();
+				Backgoundpage2.setSize(850,650);
+				Backgoundpage2.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Detai02.jpg"));
+				page2.add(Backgoundpage2);
+				
+				//create Detail
+				
+				//labelID 
+				JLabel ID = new JLabel("ID                :");
+				Backgoundpage2.add(ID);
+				ID.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+				ID.setBounds(250,200,300, 30);
+				
+				//labelName
+				JLabel Name = new JLabel("NAME          :");
+				Backgoundpage2.add(Name);
+				Name.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+				Name.setBounds(250,250, 300, 30);
+				
+				//labelSurname
+				JLabel Surname = new JLabel("SURNAME   :");
+				Backgoundpage2.add(Surname);
+				Surname.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+				Surname.setBounds(250,300, 300, 30);
+				
+				//labelSurname
+				JLabel mail = new JLabel("E-mail   :");
+				Backgoundpage2.add(mail);
+				mail.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+				mail.setBounds(250,350, 300, 30);
+				
+				//labelSurname
+				JLabel mobile = new JLabel("MOBLE   :");
+				Backgoundpage2.add(mobile);
+				mobile.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+				mobile.setBounds(250,400, 300, 30);
+				
+				JButton homeButton = new JButton();
+				homeButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton.jpg"));
+				//homeButton.setIcon(new ImageIcon("C:\\Users\\Mod\\Desktop\\java\\icon_home5.gif")); // ใส่ ่icon
+				homeButton.setBounds(750, 600, 100, 50);
+				Backgoundpage2.add(homeButton);
+					
+				homeButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent event) {
+						home.getContentPane().remove(page2);
+						home.getContentPane().add(labelhome);
+						home.getContentPane().validate();
+						home.getContentPane().repaint();
+						
+					}
+				});
+				
+				//Button OK to Product
+				JButton OKProduct = new JButton();
+				OKProduct.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Okbutton02.png"));
+				Backgoundpage2.add(OKProduct);
+				OKProduct.setBounds(350, 550, 150, 50);
+				
+				//create page3 //set BG on label
+				final JLabel page3 = new JLabel("");
+				page3.setSize(850,650);
+				page3.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Detai02.jpg"));
+				
+				//Button OK to back Home
+				JButton OKHome = new JButton("");
+				OKHome.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton.jpg"));
+				page3.add(OKHome);
+				OKHome.setBounds(380, 550, 100, 50);
+				OKHome.addActionListener(new ActionListener() {
+					//Link window Home
+					public void actionPerformed(ActionEvent event) {	
+						home.getContentPane().remove(page3);
+						home.getContentPane().add(labelhome);
+						home.getContentPane().validate();
+						home.getContentPane().repaint();
+						}
+				});
+				
+				
+				
+				//create Table
+				JScrollPane Panetable = new JScrollPane();
+				Panetable.setBounds(150,200,550, 185);
+				page3.add(Panetable);
+				
+				
+				JTable table = new JTable();
+				table.setFont(new Font("Tw Cen MT", Font.PLAIN, 16));
+				table.setEnabled(false);
+				Panetable.setViewportView(table);
+				DefaultTableModel model = (DefaultTableModel)table.getModel();
+				model.addColumn("Product");
+				model.addColumn("Stock");
+				model.addColumn("Price/Product");
+				Connection connect = null;
+				Statement s = null;
+				
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+        					"?user=root&password=password");
+        			
+        			s = connect.createStatement();
+        			
+        			
+					
+					String sql = "SELECT * FROM  chujai_stock ORDER BY Product ASC";
+					
+					ResultSet rec = s.executeQuery(sql);
+					int row = 0;
+					while((rec!=null) && (rec.next()))
+		            {			
+						model.addRow(new Object[0]);
+						model.setValueAt(rec.getString("Product"), row, 0);
+						model.setValueAt(rec.getString("stock"), row, 1);
+						model.setValueAt(rec.getString("price/product"), row, 2);
+						row++;
+		            }
+
+					rec.close();
+		             
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, e.getMessage());
+					e.printStackTrace();
+				}
+				
+				try {
+					if(s != null) {
+						s.close();
+						connect.close();
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				//Link to page2
+				OKButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try{
+							//parse input into an integer
+							String input = inputBox.getText();
+							if(data.Searchemployee(input)&&!input.equals("")){
+								JLabel ID1 = new JLabel(input);
+								Backgoundpage2.add(ID1);
+								ID1.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+								ID1.setBounds(450,200,300, 30);
+								
+								JLabel Name1 = new JLabel(data.ShowFirstemployee(input));
+								Backgoundpage2.add(Name1);
+								Name1.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+								Name1.setBounds(450,250, 300, 30);
+								
+								JLabel Surname1 = new JLabel(data.ShowLastemployee(input));
+								Backgoundpage2.add(Surname1);
+								Surname1.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+								Surname1.setBounds(450,300, 300, 30);
+								
+								JLabel Email = new JLabel(data.ShowMailemployee(input));
+								Backgoundpage2.add(Email);
+								Email.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+								Email.setBounds(450,350, 400, 30);
+								
+								JLabel mobile = new JLabel(data.ShowMobileemployee(input));
+								Backgoundpage2.add(mobile);
+								mobile.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+								mobile.setBounds(450,400, 300, 30);
+								
+							
+								
+								home.getContentPane().remove(labelEmployee);
+								home.getContentPane().add(page2);
+								home.getContentPane().validate();
+								home.getContentPane().repaint();
+							}
+							else{
+								//if error, show popup
+								JOptionPane.showMessageDialog(
+									home,
+										"Error! The ID you entered is incorrect.",
+										"Error",
+										JOptionPane.ERROR_MESSAGE
+									);
+							}
+						}
+						catch(Exception event){
+							//if error, show popup
+							JOptionPane.showMessageDialog(
+									home,
+										"Error! Please enter your ID or ID is not an integer. ",
+										"Error",
+										JOptionPane.ERROR_MESSAGE
+									);
+						}
+						
+					}
+				});
+				//Link to page3
+				OKProduct.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {	
+						home.getContentPane().remove(page2);
+						home.getContentPane().add(page3);
+						home.getContentPane().validate();
+						home.getContentPane().repaint();
+					}
+				});
+				//Button Home
+				JButton HomeButton = new JButton("");
+				HomeButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton.jpg"));
+				labelEmployee.add(HomeButton);
+				HomeButton.setBounds(750, 590, 100, 50);
+				HomeButton.addActionListener(new ActionListener() {
+					//Link window Home
+					public void actionPerformed(ActionEvent event) {	
+						home.getContentPane().remove(labelEmployee);
+						home.getContentPane().add(labelhome);
+						home.getContentPane().validate();
+						home.getContentPane().repaint();
+						}
+				});
+				
+				home.getContentPane().remove(labelhome);
+				home.getContentPane().add(labelEmployee);
+				home.getContentPane().validate();
+				home.getContentPane().repaint();
+				}
+		});
+		/////////////หน้าหลัก ปุ่มManager///////////////////////////////
+		ManagerButton.addActionListener(new ActionListener() {
+			//Link window Manager
+			public void actionPerformed(ActionEvent event) {
+				//label Manager
+				final JLabel labelManager = new JLabel("");
+				labelManager.setSize(860,650);
+				home.add(labelManager);
+				labelManager.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\manager02.jpg"));
+				
+				JLabel label1 = new JLabel("Manager ID");
+				label1.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 50));
+				labelManager.add(label1);
+				label1.setBounds(400, 330, 500, 60); 
+				
+				final JTextField inputBox = new JTextField(); //กรอหตัวเลยตัวอักษรเข้าไป
+				inputBox.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 15));
+				labelManager.add(inputBox);
+				inputBox.setBounds(430, 420, 250, 30);
+				
+				JButton okButton = new JButton("");
+				okButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Okbutton02.png"));
+				labelManager.add(okButton);
+				okButton.setBounds(470, 480, 150, 50);
+				
+				
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent event) {
+						String input = inputBox.getText(); // รับเป็นตัวอักษร
+						//getting inputs
+						if(data.Searchmanager(input)&&!input.equals("")){
+							//parse input into an integer
+							
+							final JLabel labeldetail = new JLabel("");
+							labeldetail.setSize(860,650);
+							home.add(labeldetail);
+							labeldetail.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Detai02.jpg"));
+							
+							home.getContentPane().remove(labelManager);
+							home.getContentPane().add(labeldetail);
+							home.getContentPane().validate();
+							home.getContentPane().repaint();
+							
+							JLabel label1 = new JLabel("ID :        " + input);
+							label1.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+							labeldetail.add(label1);
+							label1.setBounds(250, 200, 200, 30); 
+							
+							JLabel label2 = new JLabel("Name :        "+data.ShowFirstmanager(input));
+							label2.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+							labeldetail.add(label2);
+							label2.setBounds(250, 250, 350, 50); 
+
+							
+							JLabel label3 = new JLabel("Surname :        " + data.ShowLastmanager(input));
+							labeldetail.add(label3);
+							label3.setBounds(250, 300, 350, 50); 
+							label3.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+							
+							JLabel label4 = new JLabel("E-mail :        " + data.ShowMailmanager(input));
+							labeldetail.add(label4);
+							label4.setBounds(250, 350, 550, 50); 
+							label4.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+							
+							JLabel label5 = new JLabel("Surname :        " + data.ShowMobilemanager(input));
+							labeldetail.add(label5);
+							label5.setBounds(250, 400, 350, 50); 
+							label5.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+							
+							JButton okButton = new JButton();
+							okButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Okbutton02.png"));
+							labeldetail.add(okButton);
+							okButton.setBounds(350, 550, 150, 50);
+							
+							JButton homeButton = new JButton();
+							homeButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton.jpg"));
+							//homeButton.setIcon(new ImageIcon("C:\\Users\\Mod\\Desktop\\java\\icon_home5.gif")); // ใส่ ่icon
+							homeButton.setBounds(750, 600, 100, 50);
+							labeldetail.add(homeButton);
+								
+							homeButton.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent event) {
+									home.getContentPane().remove(labeldetail);
+									home.getContentPane().add(labelhome);
+									home.getContentPane().validate();
+									home.getContentPane().repaint();
+									
+								}
+							});
+							
+							okButton.addActionListener(new ActionListener() {
+								public void actionPerformed(ActionEvent event) {
+								
+									final JLabel labelproduct = new JLabel("");
+									labelproduct.setSize(860,650);
+									JLabel Backgoundpage3 = new JLabel();
+									Backgoundpage3.setBounds(150, 150, 550, 500);
+									Backgoundpage3.setLayout(new BoxLayout(Backgoundpage3, BoxLayout.Y_AXIS));
+									
+									
+									home.getContentPane().remove(labeldetail);
+									home.getContentPane().add(labelproduct);
+									home.getContentPane().validate();
+									home.getContentPane().repaint();
+									home.getContentPane().setLayout(null);
+									
+									
+									JTable table = new JTable();
+									table.setFont(new Font("Tw Cen MT", Font.PLAIN, 16));
+									table.setEnabled(false);
+									labelproduct.setSize(850,650);
+									home.add(labelproduct);
+									labelproduct.setIcon(new ImageIcon(("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Detai02.jpg")));
+									table.setPreferredScrollableViewportSize(new Dimension(500,200));
+									Backgoundpage3.add(table.getTableHeader(), BorderLayout.PAGE_START);
+									Backgoundpage3.add(table);
+									labelproduct.add(Backgoundpage3);
+									
+									
+									DefaultTableModel model = (DefaultTableModel)table.getModel();
+									model.addColumn("Product");
+									model.addColumn("price");
+									model.addColumn("sell");
+									Connection connect = null;
+									Statement s = null;
+									
+									try {
+										Class.forName("com.mysql.jdbc.Driver");
+					        			connect =  DriverManager.getConnection("jdbc:mysql://localhost/chujai" +
+					        					"?user=root&password=password");
+					        			
+					        			s = connect.createStatement();
+					        			
+					        			
+										
+										String sql = "SELECT * FROM  chujai_product ORDER BY Product ASC";
+										
+										ResultSet rec = s.executeQuery(sql);
+										int row = 0;
+										while((rec!=null) && (rec.next()))
+							            {			
+											model.addRow(new Object[0]);
+											model.setValueAt(rec.getString("Product"), row, 0);
+											model.setValueAt(rec.getString("price"), row, 1);
+											model.setValueAt(rec.getString("sell"), row, 2);
+											row++;
+							            }
+
+										rec.close();
+							             
+									} catch (Exception e) {
+										// TODO Auto-generated catch block
+										JOptionPane.showMessageDialog(null, e.getMessage());
+										e.printStackTrace();
+									}
+									
+									try {
+										if(s != null) {
+											s.close();
+											connect.close();
+										}
+									} catch (SQLException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									JLabel labeltotal_login = new JLabel("Total Login : "+data.Sumpoint());
+									labeltotal_login.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+									labelproduct.add(labeltotal_login);
+									labeltotal_login.setBounds(130, 530, 350, 50); 
+									
+									JLabel labeltotal_costs = new JLabel("Total Costs : "+"25,650  Baht");
+									labeltotal_costs.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+									labelproduct.add(labeltotal_costs);
+									labeltotal_costs.setBounds(370, 530, 350, 50); 
+									
+									JLabel labeltotal_profit = new JLabel("Total Net profit : "+(data.TotalBudget()-25650) + " Baht");
+									labeltotal_profit.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+									labelproduct.add(labeltotal_profit);
+									labeltotal_profit.setBounds(400, 580, 350, 50);
+									
+									
+									JLabel labeltotal_budget = new JLabel("Total Income :   "+data.TotalBudget()+"  Baht");
+									labeltotal_budget.setFont(new Font("Rockwell Extra Bold", Font.PLAIN, 20));
+									labelproduct.add(labeltotal_budget);
+									labeltotal_budget.setBounds(80, 580, 350, 50); 
+									
+									
+
+									JButton okButton = new JButton("");
+									okButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton.jpg"));
+									labelproduct.add(okButton);
+									okButton.setBounds(750, 600, 100, 50);
+									
+
+									okButton.addActionListener(new ActionListener() {
+										public void actionPerformed(ActionEvent event) {
+											home.getContentPane().remove(labelproduct);
+											home.getContentPane().add(labelhome);
+											home.getContentPane().validate();
+											home.getContentPane().repaint();
+											
+										}
+									});
+	
+								}
+							});
+									
+							
+						}else{
+							//if error, show popup
+							
+							JOptionPane.showMessageDialog(
+									home,
+									"Error! Input is not an integer.",
+									"Error",
+									JOptionPane.ERROR_MESSAGE
+									);
+						}
+				
+					}
+				});
+				//Button Home
+				JButton HomeButton = new JButton("");
+				HomeButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton.jpg"));
+				labelManager.add(HomeButton);
+				HomeButton.setBounds(750, 590, 100, 50);
+				HomeButton.addActionListener(new ActionListener() {
+					//Link window Home
+					public void actionPerformed(ActionEvent event) {	
+						home.getContentPane().remove(labelManager);
+						home.getContentPane().add(labelhome);
+						home.getContentPane().validate();
+						home.getContentPane().repaint();
+						}
+				});
+				home.getContentPane().remove(labelhome);
+				home.getContentPane().add(labelManager);
+				home.getContentPane().validate();
+				home.getContentPane().repaint();
+				}
+		});
+	//show
+		
+	CreditButton.addActionListener(new ActionListener() {
+			//Link window General
+			public void actionPerformed(ActionEvent event) {
+				final JLabel labelCredit = new JLabel("");
+				labelCredit.setSize(860,650);
+				home.add(labelCredit);
+				labelCredit.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\Credit.jpg"));
+				
+				//Button Home
+				JButton HomeButton = new JButton("");
+				HomeButton.setIcon(new ImageIcon("D:/Work/OOP/Mainproject\\Mainproject\\src\\Pic\\HomeButton.jpg"));
+				labelCredit.add(HomeButton);
+				HomeButton.setBounds(750, 590, 100, 50);
+				HomeButton.addActionListener(new ActionListener() {
+					//Link window Home
+					public void actionPerformed(ActionEvent event) {	
+						home.getContentPane().remove(labelCredit);
+						home.getContentPane().add(labelhome);
+						home.getContentPane().validate();
+						home.getContentPane().repaint();
+						}
+				});
+				
+				home.getContentPane().remove(labelhome);
+				home.getContentPane().add(labelCredit);
+				home.getContentPane().validate();
+				home.getContentPane().repaint();
+			}
+	});
+	home.setVisible(true);
+	}
+}
+		
